@@ -6,24 +6,18 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
+    marginRight: theme.spacing(130),
   },
   search: {
     position: "relative",
@@ -62,22 +56,20 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  signIn: {
+    marginLeft: theme.spacing(8),
+  },
 }));
 
 function MenuAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(null);
-  const open = Boolean(anchorEl);
   const { currentUser, signOut } = useAuth();
   const history = useHistory();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   const handleSingOut = async () => {
@@ -106,29 +98,8 @@ function MenuAppBar() {
             aria-haspopup="true"
             onClick={handleMenu}
           >
-            Categories
+            Gifs app
           </Button>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            open={open}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-          </Menu>
-          <Typography variant="h7" className={classes.title}>
-            Gifs APP
-          </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -159,24 +130,6 @@ function MenuAppBar() {
               >
                 <AccountCircle />
               </IconButton>
-              {/* <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu> */}
               <Button color="inherit" onClick={handleSingOut}>
                 <ExitToAppIcon href="/sign-up" />
               </Button>
@@ -184,7 +137,11 @@ function MenuAppBar() {
           )}
           {!currentUser && (
             <div>
-              <Button color="inherit" onClick={handleSingIn}>
+              <Button
+                color="inherit"
+                onClick={handleSingIn}
+                className={classes.signIn}
+              >
                 Sign In
               </Button>
             </div>

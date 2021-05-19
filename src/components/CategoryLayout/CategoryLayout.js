@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -14,6 +14,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { database, storage } from "../../services/firebase";
 import { useAuth } from "../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -53,8 +54,8 @@ export default function MainLayout() {
   const classes = useStyles();
   const { currentUser } = useAuth();
   const [cards, setCards] = useState([]);
-  const inputRef = useRef(null);
   const gifsList = [];
+  const { categoryName } = useParams();
 
   function handleUpload(e) {
     const file = e.target.files[0];
@@ -105,7 +106,7 @@ export default function MainLayout() {
               align="center"
               color="textPrimary"
             >
-              Gifs collection
+              Gifs collection: {categoryName}
             </Typography>
           </Container>
           <Grid container justify="center">
@@ -150,31 +151,29 @@ export default function MainLayout() {
           </Grid>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.length > 0 &&
-              cards.map((card) => (
-                <Grid item key={card.name} xs={3} sm={6} md={4}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      className={classes.cardMedia}
-                      image={card.url}
-                      title={card.name}
-                    />
-                    <CardActions>
-                      <Button
-                        size="small"
-                        color="primary"
-                        onClick={navigator.clipboard.writeText(card.url)}
-                      >
-                        Share
-                      </Button>
-                      <input type="hidden" ref={inputRef} value={card.url} />
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-          </Grid>
+          {categoryName && (
+            <Grid container spacing={4}>
+              {cards.length > 0 &&
+                cards
+                  .filter((card) => card.category === categoryName)
+                  .map((card) => (
+                    <Grid item key={card.name} xs={3} sm={6} md={4}>
+                      <Card className={classes.card}>
+                        <CardMedia
+                          className={classes.cardMedia}
+                          image={card.url}
+                          title={card.name}
+                        />
+                        <CardActions>
+                          <Button size="small" color="primary">
+                            Share
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  ))}
+            </Grid>
+          )}
         </Container>
       </main>
     </React.Fragment>
