@@ -69,7 +69,6 @@ export default function MainLayout() {
         () => {},
         () => {
           uploadGif.snapshot.ref.getDownloadURL().then((url) => {
-            console.log(url);
             database.gifs.add({
               url: url,
               name: file.name,
@@ -84,7 +83,7 @@ export default function MainLayout() {
   }
 
   useEffect(() => {
-    database.gifs.get().then((querySnapshot) => {
+    return database.gifs.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         gifsList.push(doc.data());
       });

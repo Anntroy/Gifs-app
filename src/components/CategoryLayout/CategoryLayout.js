@@ -70,7 +70,6 @@ export default function MainLayout() {
         () => {},
         () => {
           uploadGif.snapshot.ref.getDownloadURL().then((url) => {
-            console.log(url);
             database.gifs.add({
               url: url,
               name: file.name,
